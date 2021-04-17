@@ -1,0 +1,54 @@
+nama : walter 
+umur : 6
+
+nama : ruby 
+umur : 2
+
+nama : max 
+umur : 4
+
+nama : charlie 
+umur : 5
+
+nama : bruno 
+umur : 9
+
+nama : buster 
+umur : 12
+
+nama : kobe 
+umur : 10
+
+nama : angel 
+umur : 4
+
+nama : daisy 
+umur : 4
+
+nama : pearl 
+umur : 8
+
+nama : lalong 
+umur : 3
+
+nama : lola 
+umur : 4
+
+nama : amo 
+umur : 6
+
+nama : cooper 
+umur : 2
+
+nama : maya 
+umur : 7
+
+nama : peanut 
+umur : 6
+
+nama : rufus 
+umur : 1
+
+nama : gus 
+umur : 5
+
