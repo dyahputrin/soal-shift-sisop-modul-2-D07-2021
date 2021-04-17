@@ -8,6 +8,7 @@
 #include <syslog.h>
 #include <string.h>
 #include <time.h>
+#include <wait.h>
 
 int main() 
 { 
@@ -18,6 +19,8 @@ int main()
     int x, tanggal, bulan, jam, menit, detik;
     char *link[] = {"https://drive.google.com/u/0/uc?id=1FsrAzb9B5ixooGUs0dGiBr-rC7TS9wTD&export=download", "https://drive.google.com/u/0/uc?id=1ZG8nRBRPquhYXq_sISdsVcXx5VdEgi-J&export=download", "https://drive.google.com/u/0/uc?id=1ktjGgDkL0nNpY-vT7rT7O6ZI47Ke9xcp&export=download"};
     // Struct untuk membuat schedule pada waktu yg ditentukan
+    char *folder = {"/home/zntfire/Documents/SOALSHIFT/Modul 2/Soal 1"};
+
     time_t T= time(NULL);
     struct  tm tm = *localtime(&T);
 
@@ -28,14 +31,9 @@ int main()
     detik = tm.tm_sec;
 
     pid = fork(); 
-
-    /* Keluar saat fork gagal
-    * (nilai variabel pid < 0) */
     if (pid < 0) {
         exit(EXIT_FAILURE);
     }
-    /* Keluar saat fork berhasil
-    * (nilai variabel pid adalah PID dari child process) */
     if (pid > 0) {
     exit(EXIT_SUCCESS);
     }
@@ -47,7 +45,7 @@ int main()
         exit(EXIT_FAILURE);
     }
 
-    if ((chdir("/home/zntfire/Documents/SOALSHIFT/Modul 2/Soal 1")) < 0) {
+    if ((chdir(folder)) < 0) {
         exit(EXIT_FAILURE);
     }
 
@@ -58,7 +56,7 @@ int main()
     while(1)
     {
         // Proses yang akan dijalankan pada tgl 9 April
-        if(tanggal==9 && bulan==4 && menit==22&&detik==0)
+        if((tanggal==9) && (bulan==4) && (menit==22) && (detik==0))
         {   
             // Karena soal a,b,c harus dijalankan 6 jam sebelum ultah stevany maka 22-6 = 16
             if(jam==16)
@@ -167,7 +165,6 @@ int main()
                         }
                     }
                 }
-                sleep(10);
                 // E,F. Semua Folder akan di zip dan folder2nya akan dihapus
                 child_id = fork();
                 if (child_id == 0) 
@@ -180,4 +177,3 @@ int main()
         }
     }
 }
-
