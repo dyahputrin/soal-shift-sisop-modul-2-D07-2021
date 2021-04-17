@@ -18,7 +18,7 @@ int main(){
     child1 = fork();
 
     if(child1 == 0) {
-        char *argv[] = {"unzip", "-q", "./pets.zip", "-d", "/home/putri/modul2/petshop", NULL};
+        char *argv[] = {"unzip", "-q", "/home/putri/modul2/pets.zip", "-d", "/home/putri/modul2/petshop", NULL};
         execv("/usr/bin/unzip", argv);
     }
     
