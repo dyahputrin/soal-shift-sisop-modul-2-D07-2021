@@ -7,8 +7,6 @@
 #include <string.h>
 #include <stdio.h>
 
-void makeFolder(char *folderPath);
-void removeFolder(char *folderName);
 void splitFileName(char *namaFileAsli, char *fileName);
 
 pid_t child1, child2, child3, child4, child5, child6;
@@ -64,7 +62,7 @@ int main(){
                     char fileOrigin[1000];
                     char fileOriginPath[1000];
 
-                    sprintf(fileOriginPath, "%s/%s", "/home/putri/modul2/petshop", entry->d_name);
+                    sprintf(fileOriginPath, "%s%s", "/home/putri/modul2/petshop/", entry->d_name);
 
                     sprintf(fileOrigin, "%s", entry->d_name); //fileOrigin adalah file dengan nama asli (sebelum di split2)
                     fileOrigin[strlen(fileOrigin)-4] = '\0'; //strlen nya - 4 dikarenakan untuk menghilangkan .jpg
@@ -105,11 +103,18 @@ void splitFileName(char *namaFileAsli, char *fileName) {
     char animalFileName[1000]; //variable dengan isi path untuk me-rename file dengan nama hewannya saja
     char desc[1000];//variable dengan isi nama dan umur hewan, untuk dimasukkan ke file keterangan
 
-    sprintf(folderCategory, "%s/%s", "/home/putri/modul2/petshop", category);
-    sprintf(fileKet, "%s/%s/keterangan.txt", "/home/putri/modul2/petshop", category);
-    sprintf(animalFileName, "%s/%s/%s.jpg", "/home/putri/modul2/petshop", category, name);
+    sprintf(folderCategory, "%s%s", "/home/putri/modul2/petshop/", category);
+    sprintf(fileKet, "%s%s/keterangan.txt", "/home/putri/modul2/petshop/", category);
+    sprintf(animalFileName, "%s%s/%s.jpg", "/home/putri/modul2/petshop/", category, name);
 
-    makeFolder(folderCategory);
+    //membuat folder;
+    child4 = fork();
+
+    if(child4 == 0) {
+        char *argv[] = {"mkdir", "-p", folderCategory, NULL};
+        execv("/usr/bin/mkdir", argv);
+    }
+    waitpid(child4, &status, 0);
 
     //copy file ke folder
     child6 = fork();
@@ -131,32 +136,3 @@ void splitFileName(char *namaFileAsli, char *fileName) {
         fclose(file);
     }
 }
-
-//fungsi untuk memuat directory
-void makeFolder(char *folderPath) {
-
-    child4 = fork();
-
-    if(child4 == 0) {
-        char *argv[] = {"mkdir", "-p", folderPath, NULL};
-        execv("/usr/bin/mkdir", argv);
-    }
-    waitpid(child4, &status, 0);
-}
-
-//fungsi untuk remove directory yang tidak diperlukan
-void removeFolder(char *folderName) {
-
-    child5 = fork();
-
-    if(child5 == 0) {
-        char *argv[] = {"rm", "-rf", folderName, NULL};
-        execv("/usr/bin/rm", argv);
-    }
-
-    waitpid(child5, &status, 0);
-}
-
-
-
-
