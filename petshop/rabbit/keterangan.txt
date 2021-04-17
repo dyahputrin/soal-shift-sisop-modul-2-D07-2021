@@ -1,6 +1,0 @@
-nama : rufus 
-umur : 6
-
-nama : carrot 
-umur : 2
-
