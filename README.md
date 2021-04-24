@@ -197,7 +197,20 @@ kendala pada soal diatas adalah kebingungan mengeliminasi proses pada argumen ``
 
 ## Hasil 
 
+![Screenshot from 2021-04-24 21-01-46](https://user-images.githubusercontent.com/73246861/115961494-cfef7980-a540-11eb-816f-c8bca767ad5d.png)
+membuat bash setelah run program.
 
+![Screenshot from 2021-04-24 21-03-41](https://user-images.githubusercontent.com/73246861/115961514-eb5a8480-a540-11eb-8299-298b115de6d3.png)
+mencreate folder setiap 40 detik sekali,dan zip ketika file download dan status.txt telah telah terisi.
+
+![Screenshot from 2021-04-24 21-08-23](https://user-images.githubusercontent.com/73246861/115961588-442a1d00-a541-11eb-93f1-35289daf575c.png)
+isi zip.
+
+![Screenshot from 2021-04-24 21-08-28](https://user-images.githubusercontent.com/73246861/115961613-56a45680-a541-11eb-8846-6150b2a2098c.png)
+isi status.txt
+
+![Screenshot from 2021-04-24 21-04-05](https://user-images.githubusercontent.com/73246861/115961548-147b1500-a541-11eb-9bc9-c4e3b4257705.png)
+semua proses berhenti ketika program bash dijankan.
 
 
 
