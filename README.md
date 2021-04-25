@@ -138,11 +138,14 @@ child6 = fork();
  ```
  Untuk membuat file keterangan, dapat menggunakan fungsi ```fopen```. Setelah itu, gunakan ```fprintf``` untuk mengeluarkan output nama dan umur dari setiap hewan ke dalam file keterangan.txt
  
+ ### Hasil
+  ![kendala](https://github.com/dyahputrin/image/blob/eb3fba6802348ddbd1bf1b4069f669a85eb6a09c/ss2.png)
+  ![kendala](https://github.com/dyahputrin/image/blob/eb3fba6802348ddbd1bf1b4069f669a85eb6a09c/ss3.png)
+  ![kendala](https://github.com/dyahputrin/image/blob/eb3fba6802348ddbd1bf1b4069f669a85eb6a09c/ss4.png)
+ 
  ### Kendala
  Pada saat sedang membuat keterangan.txt sempat ada kendala saat memunculkan nama hewan peliharaan
- 
- 
- 
+ ![kendala](https://github.com/dyahputrin/image/blob/eb3fba6802348ddbd1bf1b4069f669a85eb6a09c/ss1.png)
 
 # soal 3 
 Ranora adalah mahasiswa Teknik Informatika yang saat ini sedang menjalani magang di perusahan ternama yang bernama “FakeKos Corp.”, perusahaan yang bergerak dibidang keamanan data. Karena Ranora masih magang, maka beban tugasnya tidak sebesar beban tugas pekerja tetap perusahaan. Di hari pertama Ranora bekerja, pembimbing magang Ranora memberi tugas pertamanya untuk membuat sebuah program.
