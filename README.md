@@ -1,4 +1,245 @@
-# soal-shift-sisop-modul-2-D07-2021
+### Laporan Resmi Soal Shift Modul 2 (D07)
+
+----------------------
+
+### Soal 1
+### A. Dikarenakan Stevany sangat menyukai huruf Y, Steven ingin nama folder-foldernya adalah Musyik untuk mp3, Fylm untuk mp4, dan Pyoto untuk jpg
+Jadi untuk menyelesaikan permasalahan atau soal a ini, yang pertama disoal disuruh memuat folder-folder bernama Musyik untuk file mp3, Fylm untuk mp4 dan Pyoto untuk jpg, namun disini saya hanya membuat direktori/folder biasa saja, karena pada soal terdapat peringatan tidak boleh menggunakan fungsi-fungsi yang ada dibahasa c, seperti system(), mkdir(), rename(), dll. Sehingga untuk mengerjakannya saya menggunakan  ```execv```, yang mana untuk menggunakan execv dibutuhkan path dan char argumen, char argumen ini digunakan agar terbaca saat menggunakan ```execv```, berikut adalah cara penyelesaianya <br/> <br/>
+    1. Untuk membuat direktori pada linux, cara yang bisa kita gunakan yaitu ```mkdir -p foldername```, agar bisa dijalankan di program c di linux, kita perlu memasukkan code tersebut ke sebuah variable char, agar nanti kita tinggal memanggilnya saja, <br/>
+    2. Selanjutnya cara memasukkan code tersebut ke dalam sebuah variable yaitu dengan memecah kata-kata yang ada pada code itu, jadi apabila dimasukkan ke dalam variable akan menjadi seperti ini ```char *argv[] = {"mkdir", "-p", "Fyoto", NULL}``` <br/>
+    3. Setelah itu selanjutnya kita mencari path yang terdapat/letak mkdirnya, untuk mencari pathnya kita bisa mencarinya pada terminal, dengan mengetikkan ```whereis mkdir``` dan akan ditampilkan pathnya yaitu ```/bin/mkdir``` <br/>
+    4. Selanjutnya karena kita sudah mendapatkan path dan variable nya, tinggal kita panggil menggunakan ```execv("/bin/mkdir", argv)```, argv merupaka variable yang menyimpan code untuk membuat direktorinya. <br/>
+    5. Lalu pada soal A ini kita disuruh membuat 3 folder dengan ketentuan nama ```Fyoto, Musyik, Fylm``` kita bisa menggunakan langka 1 sampai 4, hanya mengubahnya saja pada bagian ```foldername```, namun agar bisa langsung membuat 3 folder, yaitu kita perlu membuat perulangan for dulu yang mana, membuat perulangan sebanyak 3x ```for(int x=0;x<3;x++)``` dan ketika ```x==0``` membuat folder Fyoto, begitu juga seterusnya, untuk kode lengkapnya bisa dilihat dibawah ini.
+```
+for (x=0;x<3;x++)
+{
+    child_id = fork();
+    if (child_id == 0) 
+    {
+        if (x==0)
+        {       
+            char *argv[] = {"mkdir", "-p", "Fyoto", NULL};
+            execv("/bin/mkdir", argv);
+        }
+        if (x==1)
+        {
+            char *argv[] = {"mkdir", "-p", "Musyik", NULL};
+            execv("/bin/mkdir", argv);
+        }
+        if (x==2)
+        {
+        char *argv[] = {"mkdir", "-p", "Fylm", NULL};
+        execv("/bin/mkdir", argv);
+        }
+    }
+}
+```
+### B. Untuk musik Steven mendownloadnya dari link di bawah, film dari link di bawah lagi, dan foto dari link dibawah juga :).
+Selanjutnya untuk mengerjakan soal b ini menggunakan cara yang mirip, yaitu dengan menggunakan ```execv``` dan untuk bisa menggunakan execv kita membutuhkan path dan sebuah argumen, untuk mendownload file dari link di terminal linux, itu menggunakan code sebagai berikut: <br/> ```wget --no-check-certificate "https://drive.google.com/uc?id=ID-FILE&export=download" -O Nama_untuk_filenya.ext``` <br/> karena menggunakan execv maka, code tersebut dimasukkan ke dalam variable argumen sehingga berbentuk seperti berikut 
+```char *argv[] = {"wget", "-q", "--no-check-certificate", link, "-O", "nama.zip", NULL};```<br/>
+Lalu pada soal B ini kita disuruh mendownload 3 buah file dari link yang berbeda-beda, kita bisa menggunakan cara seperti 1a langkah 1 sampai 4, hanya mengubahnya saja pada bagian ```link``` nya saja, dan juga link untuk mendownloadnya sudah saya masukkan ke dalam sebuah array. namun agar bisa langsung mendownload 3 file, yaitu kita perlu membuat perulangan for dulu yang mana, membuat perulangan sebanyak 3x ```for(int x=0;x<3;x++)``` dan ketika ```x==0``` mendownload file pertama, begitu juga seterusnya, untuk kode lengkapnya bisa dilihat dibawah ini.
+```
+for (x=0;x<3;x++)
+{
+    child_id = fork();
+    if (child_id == 0) 
+    {
+	    if(x==0)
+	    {
+        	// Mengambil / mendownload file pada link[0], yang mana char link sudah berisi 3 link
+            char *argv[] = {"wget", "-q", "--no-check-certificate", link[0], "-O", "Foto_for_Stevany.zip", NULL};
+            execv("/bin/wget", argv);
+	    }
+		if(x==1)
+	    {
+            char *argv[] = {"wget", "-q", "--no-check-certificate", link[1], "-O", "Musik_for_Stevany.zip", NULL};
+            execv("/bin/wget", argv);
+	    }	
+		if(x==2)
+	    {   	 
+            char *argv[] = {"wget", "-q", "--no-check-certificate", link[2], "-O", "Film_for_Stevany.zip", NULL};
+            execv("/bin/wget", argv);
+	    }  
+    }
+}
+```
+### C. Mengekstrak / unzip file yang sudah didownload pada Poin B
+Mengekstrak file yang sudah didownload tadi bisa menggunakan cara seperti diatas namun hanya terletak pada argumennya saja yaitu apabila unzip menggunakan cara berikut:
+```char *argv[] = {"unzip", "-q", "Foto_for_Stevany.zip", NULL};```<br/>
+```-q``` berfungsi agar saat proses tersebut dijalankan tidak akan mengeluarkan output diterminal, lalu agar langsung bisa mengekstrak 3 file sekaligus yaitu dengan cara:
+```
+for (x=0;x<3;x++)
+{
+    child_id1 = fork();
+    if (child_id1 == 0) 
+    {
+        if (x==0)
+        {
+            // Melakukan unzip setelah mendownload file yang bernama .....
+            char *argv[] = {"unzip", "-q", "Foto_for_Stevany.zip", NULL};
+            execv("/bin/unzip", argv);
+        }
+        if (x==1)
+        {
+            char *argv[] = {"unzip", "-q", "Musik_for_Stevany.zip", NULL};
+            execv("/bin/unzip", argv);
+        }
+        if (x==2)
+        {
+            char *argv[] = {"unzip", "-q", "Film_for_Stevany.zip", NULL};
+            execv("/bin/unzip", argv);
+        }
+    }
+}
+```
+Agar langsung bisa mengekstrak 3 file sekaligus maka dibutuhkan perulangan dan didalamnya terdapat if statement yang apabila memenuhi kondisi 1,2,3 maka akan menjalankan execv nya.
+
+
+### Menjalankan Proses A, B, dan C Otomatis 6 Jam sebelum Ulang Tahun, dan D, E Saat Ulang tahun
+untuk mengerjakannya karena tidak boleh menggunakan crontab, maka untuk membuat schedulenya saya membuat secara manual, yaitu menggunakan struct untuk mengeset waktunya,
+```
+        time_t T= time(NULL);
+        struct  tm tm = *localtime(&T);
+
+        tanggal = tm.tm_mday;
+        bulan = tm.tm_mon + 1;
+        jam = tm.tm_hour;
+        menit = tm.tm_min;
+        detik = tm.tm_sec;
+```
+```*localtime``` disini berguna untuk mengambil waktu sekarang/ waktu realnya, dan disimpan ke struct tm. selanjutnya tinggal membuat variable-variable seperti tanggal, bulan, jam, dll dengan menggunakan struct tm dan kode waktunya seperti tm_mday, tm_mon, tm_hour, dll. setelah variable-variable itu sudah menyimpan waktu real, maka tinggal kita lakukan if statement, jika waktu ulang tahun dikurangi 6 jam maka lakukan proses a,b, dan c. Seperti berikut :
+```
+time_t T= time(NULL);
+        struct  tm tm = *localtime(&T);
+
+        tanggal = tm.tm_mday;
+        bulan = tm.tm_mon + 1;
+        jam = tm.tm_hour;
+        menit = tm.tm_min;
+        detik = tm.tm_sec;
+
+        // Proses yang akan dijalankan pada tgl 9 April
+        // Karena soal a,b,c harus dijalankan 6 jam sebelum ultah stevany maka 22-6 = 16
+        if(tanggal==9&&bulan==4&&jam==16&&menit==22&&detik == 0)
+        {   
+            //SC soal 1a
+            //SC soal 1b
+            //SC soal 1c
+        }
+        // Saat waktu menunjukkan ulang tahun stevany yaitu jam == 22 maka lakukan proses d, e
+        if(tanggal==9&&bulan==4&&jam==22&&menit==22&&detik == 0)
+        { 
+            //SC Soal 1d
+            //SC soal 1e
+         }
+```
+### D. Memindahkan File yang diunzip tadi ke dalam folder baru yang sudah dibuat
+Memindahkan file dari folder satu ke folder lainnya, bisa menggunakan cara seperti diatas namun hanya terletak pada argumennya saja yaitu apabila memindahkan file menggunakan cara berikut:
+```char *argv[] = {"mv", "-T", "/path_folder1", "/path_folder2", NULL};```<br/>
+Lalu agar langsung bisa memindahkan 3 file sekaligus yaitu dengan cara:
+```
+            for (x=0;x<3;x++)
+            {
+                child_id = fork();
+                if (child_id == 0) 
+                {
+                    if (x==0)
+                    {   
+                        // Memindah isi file yang ada di folder FOTO ke Fyoto
+                        char *argv[] = {"mv", "-T", "/home/zntfire/Documents/SOALSHIFT/Modul 2/Soal 1/FOTO", "/home/zntfire/Documents/SOALSHIFT/Modul 2/Soal 1/Fyoto", NULL};
+                        execv("/bin/mv", argv);
+                    }
+                    if (x==1)
+                    {
+                        char *argv[] = {"mv","-T", "/home/zntfire/Documents/SOALSHIFT/Modul 2/Soal 1/MUSIK", "/home/zntfire/Documents/SOALSHIFT/Modul 2/Soal 1/Musyik", NULL};
+                        execv("/bin/mv", argv);
+                    }
+                    if (x==2)
+                    {
+                        char *argv[] = {"mv","-T", "/home/zntfire/Documents/SOALSHIFT/Modul 2/Soal 1/FILM", "/home/zntfire/Documents/SOALSHIFT/Modul 2/Soal 1/Fylm", NULL};
+                        execv("/bin/mv", argv);
+                    }
+                }
+            }
+```
+Agar langsung bisa memindahkan 3 file dari folder ke folder sekaligus maka dibutuhkan perulangan dan didalamnya terdapat if statement yang apabila memenuhi kondisi 1,2,3 maka akan menjalankan execv nya.
+
+### E. MenZIP semua folder yang ada, dan menghapus foldernya, sehingga hanya menampilkan file bertipe zip saja.
+Agar bisa menzip folder-folder yang kita pilih, bisa menggunakan cara seperti diatas namun kuncinya hanya terletak pada argumennya saja yaitu apabila menzip folder menggunakan cara berikut:
+```char *argv[] = {"zip", "-r", "-m", "namaoutput.zip", "Folder1", "Folder2", "Folder3", NULL}```<br/>
+Namun cara ini tidak perlu menggunakan perulangan, karena untuk code zip ini bisa langsung menzip lebih dari 1 folder, dan juga saya tidak perlu membuat fungsi baru untuk menghapus sisa-sisa foldernya, karena pada code diatas, sudah saya tambahkan ```-m``` yang mana dengan memakai fungsi tersebut langsung menghapus folder-foldernya sehingga apabila diliat full codenya sebagai berikut: <br/>
+```
+            child_id = fork();
+            if (child_id == 0) 
+            {
+                // Memasukkan 3 folder kedalam zip dan langsung menghapus foldernya.
+                char *argv[] = {"zip", "-r", "-m", "Lopyu_Stevany.zip", "Fyoto", "Musyik", "Fylm", NULL};
+                execv("/bin/zip", argv);
+            }
+```
+### Fungsi-Fungsi Tambahan
+Untuk mengerjakan soal ini, karena disoal terdapat petunjuk yaitu programnya berjalan di background secara terus menerus tanpa adanya interaksi secara langsung dengan user yang sedang aktif. Oleh karena itu saya menggunakan daemon, yang mana source code daemonnya tidak saya jelaskan karena sudah terdapat pada modul seslab 2, apabila menggunakan daemon saya hanya memasukkan source code pengerjaan soal 1a-e ini pada bagian ```while(1)``` nya. berikut contoh program daemonnya : <br/>
+```
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <fcntl.h>
+#include <errno.h>
+#include <unistd.h>
+#include <syslog.h>
+#include <string.h>
+
+int main() {
+  pid_t pid, sid;        // Variabel untuk menyimpan PID
+
+  pid = fork();     // Menyimpan PID dari Child Process
+
+  /* Keluar saat fork gagal
+  * (nilai variabel pid < 0) */
+  if (pid < 0) {
+    exit(EXIT_FAILURE);
+  }
+
+  /* Keluar saat fork berhasil
+  * (nilai variabel pid adalah PID dari child process) */
+  if (pid > 0) {
+    exit(EXIT_SUCCESS);
+  }
+
+  umask(0);
+
+  sid = setsid();
+  if (sid < 0) {
+    exit(EXIT_FAILURE);
+  }
+
+  if ((chdir("/")) < 0) {
+    exit(EXIT_FAILURE);
+  }
+
+  close(STDIN_FILENO);
+  close(STDOUT_FILENO);
+  close(STDERR_FILENO);
+
+  while (1) {
+    // Tulis program kalian di sini
+
+    sleep(30);
+  }
+}
+```
+Dan juga setiap proses dari A-E setiap selesai melakukan perulangan saya tambahkan ```sleep(10)``` untuk memperlancar program tersebut
+
+### Kendala
+Kendala yang saya kerjakan awalnya terdapat pada schedule nya, yaitu bagaimana cara menjalankan program hanya pada jam yang ditentukan, dan akhirnya saya menemukan solusinya dengan menggunakan struct time.
+
+### Output Apabila Dijalankan 6 Jam Sebelum Ulang Tahun
+![alt text](https://github.com/migellamp/ss_soal1/blob/main/Screenshot%20from%202021-04-09%2016-23-34.png) <br />
+### Output Apabila Dijalankan Saat Ulang Tahun
+![alt text](https://github.com/migellamp/ss_soal1/blob/main/Screenshot%20from%202021-04-25%2018-57-39.png) <br />
+
+----------------------
 
 # soal 2
 Loba bekerja di sebuah petshop terkenal, suatu saat dia mendapatkan zip yang berisi banyak sekali foto peliharaan dan Ia diperintahkan untuk mengkategorikan foto-foto peliharaan tersebut. Loba merasa kesusahan melakukan pekerjaanya secara manual, apalagi ada kemungkinan ia akan diperintahkan untuk melakukan hal yang sama. Kamu adalah teman baik Loba dan Ia meminta bantuanmu untuk membantu pekerjaannya.
@@ -146,6 +387,8 @@ child6 = fork();
  ### Kendala
  Pada saat sedang membuat keterangan.txt sempat ada kendala saat memunculkan nama hewan peliharaan
  ![kendala](https://github.com/dyahputrin/image/blob/eb3fba6802348ddbd1bf1b4069f669a85eb6a09c/ss1.png)
+ 
+ ----------------------
 
 # soal 3 
 Ranora adalah mahasiswa Teknik Informatika yang saat ini sedang menjalani magang di perusahan ternama yang bernama “FakeKos Corp.”, perusahaan yang bergerak dibidang keamanan data. Karena Ranora masih magang, maka beban tugasnya tidak sebesar beban tugas pekerja tetap perusahaan. Di hari pertama Ranora bekerja, pembimbing magang Ranora memberi tugas pertamanya untuk membuat sebuah program.
