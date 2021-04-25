@@ -1,5 +1,148 @@
 # soal-shift-sisop-modul-2-D07-2021
 
+# soal 2
+Loba bekerja di sebuah petshop terkenal, suatu saat dia mendapatkan zip yang berisi banyak sekali foto peliharaan dan Ia diperintahkan untuk mengkategorikan foto-foto peliharaan tersebut. Loba merasa kesusahan melakukan pekerjaanya secara manual, apalagi ada kemungkinan ia akan diperintahkan untuk melakukan hal yang sama. Kamu adalah teman baik Loba dan Ia meminta bantuanmu untuk membantu pekerjaannya.
+
+## soal 2a
+Mengextract zip yang diberikan ke dalam folder "home/[user]/modul2/petshop" dan menghapus folder-folder yang tidak dibutuhkan
+```
+child1 = fork();
+
+    if(child1 == 0) {
+        char *argv[] = {"unzip", "-q", "/home/putri/modul2/pets.zip", "-d", "/home/putri/modul2/petshop", NULL};
+        execv("/usr/bin/unzip", argv);
+    }
+    
+    waitpid(child1, &status, 0);
+```
+
+Potongan kode diatas, menunjukkan langkah-langkah untuk mengextract pets.zip menggunakan command ```unzip```. Setelah itu, kita harus menghapus folder-folder yang tidak dibutuhkan dengan menggunakan kode dibawah ini.
+```
+char folderName[1000];
+    sprintf(folderName, "%s/","/home/putri/modul2/petshop");
+
+    DIR *folder;
+    struct dirent *entry;
+    
+    if((folder = opendir(folderName)) != NULL) {
+        while((entry = readdir(folder)) != NULL) {
+            if(strcmp(entry->d_name, "..") && strcmp(entry->d_name, ".")) {
+                if(entry->d_type == DT_DIR) { //DT_DIR itu data type buat folder
+
+                    char folderDelete[1256];
+                    sprintf(folderDelete, "%s%s", folderName, entry->d_name);
+
+                   	child2 = fork();
+
+                    if(child2 == 0) {
+                        char *argv[] = {"rm", "-rf", folderDelete, NULL};
+                        execv("/bin/rm", argv);
+                    }
+
+                    waitpid(child2, &status, 0);
+                }
+            } 
+        }
+	}
+```
+Untuk menghapus folder-folder yang tidak dibutuhkan pada folder pets, kita harus menulusuri ke semua file yang ada di folder pets. Apabila ditemukan type ```DT_DIR``` maka itu merupakan sebuah directory. Sehingga, directory tersebut harus dihapus. Penghapusan directory dapat menggunakan command ```rm -rf```
+
+## soal 2b
+Membuat folder sesuai dengan jenis hewan peliharaan
+```
+child4 = fork();
+
+    if(child4 == 0) {
+        char *argv[] = {"mkdir", "-p", folderCategory, NULL};
+        execv("/usr/bin/mkdir", argv);
+    }
+    waitpid(child4, &status, 0);
+```
+Potongan kode diatas, menunjukkan tahapan untuk membuat folder sesaui dengan jenis hewan peliharaan. Namun, sebelum itu, kita perlu melakukan split nama file untuk mendapatkan jenis-jenis hewan peliharaan apa saja yang tersedia. Untuk melakukan split nama file, kita menggunakan fungsi ```strtok``` dengan delimiter tertentu. Stelah itu menggunakan ```sprintf``` untuk menggabungkan beberapa string menjadi sebuah path, agar memudahkan dalam pembuatan folder nantinya. Potongan kode dibawah ini menunjukan tahapan tersebut.
+```
+char *deli = ";";	//sebagai delimiter
+    char *category = strtok(fileName, deli);
+    char *name = strtok(NULL, deli); 
+    char *age = strtok(NULL, deli);
+
+    char folderCategory[1000]; //variable dengan isi path folder berdasar jenis
+    char fileKet[1000]; //variabel dengan isi path folder file keterangan
+    char animalFileName[1000]; //variable dengan isi path untuk me-rename file dengan nama hewannya saja
+    char desc[1000];//variable dengan isi nama dan umur hewan, untuk dimasukkan ke file keterangan
+
+    sprintf(folderCategory, "%s%s", "/home/putri/modul2/petshop/", category);
+    sprintf(fileKet, "%s%s/keterangan.txt", "/home/putri/modul2/petshop/", category);
+    sprintf(animalFileName, "%s%s/%s.jpg", "/home/putri/modul2/petshop/", category, name);
+```
+Dikarenakan terdapat file yang terdiri dari dua jenis hewan peliharaan, file-file seperti itu harus di split terlebih dahulu menggunakan potongan kode dibawah ini.
+```
+if((folder = opendir(folderName)) != NULL) {
+        while((entry = readdir(folder)) != NULL) {
+            if(strcmp(entry->d_name, "..") && strcmp(entry->d_name, ".")) {
+                if(entry->d_type == DT_REG) { //DT_REG itu data type buat file
+
+                    char fileOrigin[1000];
+                    char fileOriginPath[1000];
+
+                    sprintf(fileOriginPath, "%s%s", "/home/putri/modul2/petshop/", entry->d_name);
+
+                    sprintf(fileOrigin, "%s", entry->d_name); //fileOrigin adalah file dengan nama asli (sebelum di split2)
+                    fileOrigin[strlen(fileOrigin)-4] = '\0'; //strlen nya - 4 dikarenakan untuk menghilangkan .jpg
+
+                    char *deli2 = "_";
+                    char *animalType1 = strtok(fileOrigin, deli2); //nama file yang hanya terdiri dari satu hewan
+                    char *animalType2 = strtok(NULL, deli2); //nama file yang terdidiri dari dua hewan
+```
+##soal 2c
+Setelah folder kategori berhasil dibuat, programmu akan memindahkan foto ke folder dengan kategori yang sesuai dan di rename dengan nama peliharaan.
+
+Untuk memindahkan foto ke folder kategori yang sesuai, dapat menggunakan command ```cp``` seperti potongan kode dibawah ini untuk meng-copy foto.
+```
+child6 = fork();
+
+    if(child6 == 0) {
+        char *argv[] = {"cp", namaFileAsli, animalFileName, NULL};
+        execv("/usr/bin/cp", argv);
+    }
+    waitpid(child6, &status, 0);
+ ```
+ Setelah foto berhasil di copy ke folder yang sesuai, foto-foto yang terdapat pada path sebelumnya dapat di hapus, seperti pada potongan kode dibawah ini.
+ ```
+ child3 = fork();
+                    if(child3 == 0) {
+                        char *argv[] = {"rm", "-rf", fileOriginPath, NULL};
+                        execv("/usr/bin/rm", argv);
+                    }
+
+                    waitpid(child3, &status, 0);
+ ```
+ 
+ ##soal 2d
+ Karena dalam satu foto bisa terdapat lebih dari satu peliharaan maka foto harus di pindah ke masing-masing kategori yang sesuai
+ 
+ Penyelesaian soal ini, sudah ada pada poin 2b.
+ 
+ ##soal 2e
+ Membuat file keterangan,txt yang berisi nama dan umur semua hewan peliharaan di setiap folder
+ ```
+  sprintf(desc, "nama : %s \numur : %s\n\n", name, age);
+
+    //membuat file keterangan.txt
+    FILE *file;
+    file = fopen(fileKet, "a");
+
+    if(file) {
+        fprintf(file, "%s", desc);
+        fclose(file);
+    }
+ ```
+ Untuk membuat file keterangan, dapat menggunakan fungsi ```fopen```. Setelah itu, gunakan ```fprintf``` untuk mengeluarkan output nama dan umur dari setiap hewan ke dalam file keterangan.txt
+ 
+ ### Kendala
+ Pada saat sedang membuat keterangan.txt sempat ada kendala saat memunculkan nama hewan peliharaan
+ 
+ 
+ 
 
 # soal 3 
 Ranora adalah mahasiswa Teknik Informatika yang saat ini sedang menjalani magang di perusahan ternama yang bernama “FakeKos Corp.”, perusahaan yang bergerak dibidang keamanan data. Karena Ranora masih magang, maka beban tugasnya tidak sebesar beban tugas pekerja tetap perusahaan. Di hari pertama Ranora bekerja, pembimbing magang Ranora memberi tugas pertamanya untuk membuat sebuah program.
